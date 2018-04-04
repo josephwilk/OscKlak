@@ -92,9 +92,26 @@ namespace Klak.Osc
         {
             if (type == 'f') return ReadFloat32();
             if (type == 'i') return ReadInt32();
+            //if (type == 's') return ReadStringArg();
             // return zero for unsupported types
             return 0.0f;
         }
+
+        string ReadStringArg()
+    		{
+    			string s = null;
+    			int i = _position + 4;
+    			if  (i > _dataLength)
+    				throw new SystemException("Invalid packet");
+    			for (; (i - 1) < _dataBuffer.Length; i += 4) {
+    				if (_dataBuffer [i - 1] == 0) {
+    					s = Encoding.UTF8.GetString(_dataBuffer, _position, i - _position);
+    					break;
+    				}
+    			}
+    			_position = (i - _position);
+    			return s;
+    		}
 
         int ReadInt32()
         {
