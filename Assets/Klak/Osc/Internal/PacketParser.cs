@@ -110,7 +110,7 @@ namespace Klak.Osc
     				}
     			}
     			_position = (i - _position);
-    			return s;
+    			return s.Replace("\0", "");
     		}
 
         int ReadInt32()
